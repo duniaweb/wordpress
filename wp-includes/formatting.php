@@ -2397,7 +2397,7 @@ function translate_smiley( $matches ) {
 	 */
 	$src_url = apply_filters( 'smilies_src', includes_url( "images/smilies/$img" ), $img, site_url() );
 
-	return sprintf( '<img src="%s" alt="%s" class="wp-smiley" style="height: 1em; max-height: 1em;" />', esc_url( $src_url ), esc_attr( $smiley ) );
+	return sprintf( '<img src="%s" alt="%s" class="emojione" />', esc_url( $src_url ), esc_attr( $smiley ) );
 }
 
 /**
@@ -4495,8 +4495,7 @@ function print_emoji_styles() {
 	$printed = true;
 ?>
 <style type="text/css">
-img.wp-smiley,
-img.emoji {
+img.wp-smiley{
 	display: inline !important;
 	border: none !important;
 	box-shadow: none !important;
@@ -4507,6 +4506,7 @@ img.emoji {
 	background: none !important;
 	padding: 0 !important;
 }
+.emojione,img.emoji,.wp-smiley-select,.emoji, img.emojione {font-size:inherit;height:3ex;width:3.1ex;min-height:20px;min-width:20px;display:inline-block;margin:-.2ex .15em .2ex;line-height:normal;vertical-align:middle}
 </style>
 <?php
 }
@@ -4534,7 +4534,7 @@ function print_emoji_detection_script() {
 		 *
 		 * @param string The emoji base URL.
 		 */
-		'baseUrl' => apply_filters( 'emoji_url', 'https://s.w.org/images/core/emoji/72x72/' ),
+		'baseUrl' => apply_filters( 'emoji_url', '//cdn.jsdelivr.net/emojione/assets/svg/' ),
 
 		/**
 		 * Filter the extension of the emoji files.
@@ -4543,7 +4543,7 @@ function print_emoji_detection_script() {
 		 *
 		 * @param string The emoji extension. Default .png.
 		 */
-		'ext' => apply_filters( 'emoji_ext', '.png' ),
+		'ext' => apply_filters( 'emoji_ext', '.svg' ),
 	);
 
 	$version = 'ver=' . $wp_version;
@@ -4646,10 +4646,10 @@ function wp_staticize_emoji( $text ) {
 	$text = wp_encode_emoji( $text );
 
 	/** This filter is documented in wp-includes/formatting.php */
-	$cdn_url = apply_filters( 'emoji_url', 'https://s.w.org/images/core/emoji/72x72/' );
+	$cdn_url = apply_filters( 'emoji_url', '//cdn.jsdelivr.net/emojione/assets/svg/' );
 
 	/** This filter is documented in wp-includes/formatting.php */
-	$ext = apply_filters( 'emoji_ext', '.png' );
+	$ext = apply_filters( 'emoji_ext', '.svg' );
 
 	$output = '';
 	/*
@@ -4682,7 +4682,7 @@ function wp_staticize_emoji( $text ) {
 						$chars = str_replace( array( '&#x', ';'), '', $flag );
 
 						list( $char1, $char2 ) = str_split( $chars, 5 );
-						$entity = sprintf( '<img src="%s" alt="%s" class="wp-smiley" style="height: 1em; max-height: 1em;" />', $cdn_url . $char1 . '-' . $char2 . $ext, html_entity_decode( $flag ) );
+						$entity = sprintf( '<img src="%s" alt="%s" class="emojione" />', $cdn_url . $char1 . '-' . $char2 . $ext, html_entity_decode( $flag ) );
 
 						$content = str_replace( $flag, $entity, $content );
 					}
@@ -4697,7 +4697,7 @@ function wp_staticize_emoji( $text ) {
 				if ( ! empty( $matches[1] ) ) {
 					foreach ( $matches[1] as $emoji ) {
 						$char = str_replace( array( '&#x', ';'), '', $emoji );
-						$entity = sprintf( '<img src="%s" alt="%s" class="wp-smiley" style="height: 1em; max-height: 1em;" />', $cdn_url . $char . $ext, html_entity_decode( $emoji ) );
+						$entity = sprintf( '<img src="%s" alt="%s" class="emojione" />', $cdn_url . $char . $ext, html_entity_decode( $emoji ) );
 
 						$content = str_replace( $emoji, $entity, $content );
 					}
